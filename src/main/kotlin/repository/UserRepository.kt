@@ -1,8 +1,6 @@
 package com.diploma.server.repository
 
-import com.diploma.server.model.Role
 import com.diploma.server.model.RoleTmp
-import com.diploma.server.model.Shop
 import com.diploma.server.model.User
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Repository
@@ -15,24 +13,10 @@ class UserRepository(
     private val users = mutableSetOf(
         User(
             id = UUID.randomUUID(),
-            email = "email-1@gmail.com",
-            password = encoder.encode("pass1"),
-            role = RoleTmp.USER,
-            shop = Shop(UUID.randomUUID(),"Shop1","Address1"),
-        ),
-        User(
-            id = UUID.randomUUID(),
-            email = "email-2@gmail.com",
-            password = encoder.encode("pass2"),
+            username = "Admin",
+            password = encoder.encode("admin"),
             role = RoleTmp.ADMIN,
-            shop = Shop(UUID.randomUUID(),"Shop1","Address1"),
-        ),
-        User(
-            id = UUID.randomUUID(),
-            email = "email-3@gmail.com",
-            password = encoder.encode("pass3"),
-            role = RoleTmp.USER,
-            shop = Shop(UUID.randomUUID(),"Shop1","Address1"),
+            shop = null,
         ),
     )
 
@@ -42,9 +26,9 @@ class UserRepository(
         return users.add(updated)
     }
 
-    fun findByEmail(email: String): User? =
+    fun findByUsername(username: String): User? =
         users
-            .firstOrNull { it.email == email }
+            .firstOrNull { it.username == username }
 
     fun findAll(): Set<User> =
         users

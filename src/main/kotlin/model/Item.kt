@@ -24,6 +24,6 @@ data class Item(
     val price: BigDecimal,
 
     @ManyToOne
-    @JoinColumn(name = "shop_id", nullable = false)
-    val shop: Shop
+    @JoinColumn(name = "shop_id", nullable = true)
+    val shop: Shop?
 )

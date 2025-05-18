@@ -6,31 +6,14 @@ import java.util.*
 
 @Repository
 class ShopRepository {
-    val shops = mutableSetOf(
-        Shop(
-            id = UUID.randomUUID(),
-            name = "Shop1",
-            location = "Address1",
-        ),
-        Shop(
-            id = UUID.randomUUID(),
-            name = "Shop2",
-            location = "Address2",
-        ),
-        Shop(
-            id = UUID.randomUUID(),
-            name = "Shop3",
-            location = "Address3",
-        ),
-    )
-    
+    val shops = mutableSetOf<Shop>()
+
     fun save(user: Shop): Boolean {
         return shops.add(user)
     }
 
-    fun findByName(name: String): Shop? =
-        shops
-            .firstOrNull { it.name == name }
+    fun findByName(name: String): Set<Shop> =
+        shops.filter { it.name == name }.toSet()
 
     fun findAll(): Set<Shop> =
         shops

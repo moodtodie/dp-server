@@ -11,7 +11,7 @@ data class User (
     val id: UUID,
 
     @Column(unique = true, nullable = false)
-    val email: String,
+    val username: String,
 
     @Column(nullable = false)
     val password: String,
@@ -24,5 +24,5 @@ data class User (
 
     @ManyToOne
     @JoinColumn(name = "shop_id", nullable = true)
-    val shop: Shop
+    val shop: Shop?
 )

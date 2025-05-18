@@ -1,16 +1,42 @@
 package com.diploma.server
 
+import com.diploma.server.repository.ItemRepository
+import com.diploma.server.repository.ShopRepository
+import com.diploma.server.repository.UserRepository
+import com.diploma.server.service.ApiService
+import org.apache.commons.csv.CSVFormat
+import org.apache.commons.csv.CSVPrinter
+import org.springframework.security.crypto.password.PasswordEncoder
+import java.io.File
+import java.io.FileWriter
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 fun main() {
-    val name = "Kotlin"
-    //TIP Press <shortcut actionId="ShowIntentionActions"/> with your caret at the highlighted text
-    // to see how IntelliJ IDEA suggests fixing it.
-    println("Hello, " + name + "!")
+    generateReport()
+}
 
-    for (i in 1..5) {
-        //TIP Press <shortcut actionId="Debug"/> to start debugging your code. We have set one <icon src="AllIcons.Debugger.Db_set_breakpoint"/> breakpoint
-        // for you, but you can always add more by pressing <shortcut actionId="ToggleLineBreakpoint"/>.
-        println("i = $i")
+fun generateReport(): File {
+    val items = ItemRepository().findAll()
+
+    val dir = File(".reports")
+    if (!dir.exists()) {
+        dir.mkdirs() // создаёт директорию, если её нет
     }
+
+    val file = File(".reports/tmp.cvs")
+    FileWriter(file).use { writer ->
+        val csvPrinter = CSVPrinter(writer, CSVFormat.DEFAULT.withHeader("Name", "Payment"))
+
+        items.forEach { item ->
+            csvPrinter.printRecord(item.name, item.quantity, item.price, item.barcode)
+        }
+
+        // Пустая строка как разделитель
+        csvPrinter.println()
+        // Статистика в конце
+        csvPrinter.printRecord("Total Items", items.size)
+
+        csvPrinter.flush()
+    }
+    return file
 }

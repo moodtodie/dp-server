@@ -32,12 +32,12 @@ class TokenService(
             .compact()
 
     fun isValid(token: String, userDetails: UserDetails): Boolean {
-        val email = extractEmail(token)
+        val username = extractUsername(token)
 
-        return userDetails.username == email && !isExpired(token)
+        return userDetails.username == username && !isExpired(token)
     }
 
-    fun extractEmail(token: String): String? =
+    fun extractUsername(token: String): String? =
         getAllClaims(token)
             .subject
 

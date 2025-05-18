@@ -15,13 +15,13 @@ class CustomUserDetailsService(
 ) : UserDetailsService {
 
     override fun loadUserByUsername(username: String): UserDetails =
-        userRepository.findByEmail(username)
+        userRepository.findByUsername(username)
             ?.mapToUserDetails()
             ?: throw UsernameNotFoundException("Not found!")
 
     private fun ApplicationUser.mapToUserDetails(): UserDetails =
         User.builder()
-            .username(this.email)
+            .username(this.username)
             .password(this.password)
             .roles(this.role.name)
             .build()

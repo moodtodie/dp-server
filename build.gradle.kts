@@ -52,6 +52,17 @@ dependencies {
     // https://mvnrepository.com/artifact/org.apache.commons/commons-csv
     implementation("org.apache.commons:commons-csv:1.14.0")
 
+    // SLF4J API
+    implementation("org.slf4j:slf4j-api:2.0.17")
+
+    // Logback как реализация SLF4J
+    implementation("ch.qos.logback:logback-classic:1.5.18")
+
+    implementation("org.jmdns:jmdns:3.6.1")
+
+    implementation("com.squareup.okhttp3:okhttp:4.12.0")
+//    implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.15.3")
+
 //    BD
     runtimeOnly("com.h2database:h2")
     runtimeOnly("org.postgresql:postgresql")

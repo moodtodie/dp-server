@@ -1,38 +1,24 @@
 package com.diploma.server.repository
 
 import com.diploma.server.model.Item
-import com.diploma.server.model.Shop
-import org.springframework.data.repository.CrudRepository
 import org.springframework.stereotype.Repository
-import java.math.BigDecimal
-import java.util.UUID
+import java.util.*
 
 @Repository
-//interface ItemRepository : CrudRepository<Item, UUID>
-//{
-//    fun findByLastName(lastName: String): Iterable<Item>
-//}
-class ItemRepository{
-    private val items = mutableSetOf(
-        Item(
-            id = UUID.randomUUID(),
-            name = "Item1",
-            barcode = "12342",
-            quantity = 14,
-            price = BigDecimal.valueOf(13.5),
-            shop = Shop(UUID.randomUUID(),"Shop1","Address1"),
-        ),
-        Item(
-            id = UUID.randomUUID(),
-            name = "Item2",
-            barcode = "23453",
-            quantity = 29,
-            price = BigDecimal.valueOf(3.4),
-            shop = Shop(UUID.randomUUID(),"Shop2","Address2"),
-        ),
-    )
+class ItemRepository {
+    private val items = mutableSetOf<Item>()
+
+//    fun save(item: Item): Boolean {
+//        return items.add(item)
+//    }
 
     fun save(item: Item): Boolean {
+        val foundItem = item.id?.let { findByUUID(it) }
+
+        if (foundItem != null)
+            items.removeIf {
+                it.id == item.id
+            }
         return items.add(item)
     }
 

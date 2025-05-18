@@ -1,6 +1,7 @@
 package com.diploma.server.model
 
 import jakarta.persistence.*
+import java.sql.Timestamp
 import java.util.*
 
 @Entity
@@ -10,9 +11,12 @@ data class ActionLog(
     @GeneratedValue
     val id: UUID? = null,
 
+    @Column(name = "created_at", nullable = false)
+    val createdAt: Timestamp = Timestamp(System.currentTimeMillis()),
+
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
-    val user: User,
+    val createdBy: User,
 
     @Column(nullable = false)
     val entity: String, // Например, "item" или "shop"

@@ -24,10 +24,13 @@ class SecurityConfiguration(
             .csrf { it.disable() }
             .authorizeHttpRequests {
                 it
+//                    ALL
                     .requestMatchers("/api/auth", "api/auth/refresh", "/api/check", "/error").permitAll()
-                    .requestMatchers(HttpMethod.POST, "/api/users").permitAll()
+//                    ADMINS
                     .requestMatchers("/api/users**").hasRole("ADMIN")
-                    .requestMatchers("/api/item", "/api/shop").hasRole("USER")
+                    .requestMatchers(HttpMethod.POST, "/api/shops**").hasRole("ADMIN")
+                    .requestMatchers(HttpMethod.DELETE, "/api/shops**").hasRole("ADMIN")
+//                    USERS
                     .anyRequest().fullyAuthenticated()
             }
             .sessionManagement {

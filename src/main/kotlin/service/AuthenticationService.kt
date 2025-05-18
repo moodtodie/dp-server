@@ -1,9 +1,9 @@
 package com.diploma.server.service
 
-import com.diploma.server.repository.RefreshTokenRepository
 import com.diploma.server.config.JwtProperties
 import com.diploma.server.controller.auth.AuthenticationRequest
 import com.diploma.server.controller.auth.AuthenticationResponse
+import com.diploma.server.repository.RefreshTokenRepository
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.userdetails.UserDetails
@@ -22,11 +22,11 @@ class AuthenticationService(
     fun authentication(authenticationRequest: AuthenticationRequest): AuthenticationResponse {
         authManager.authenticate(
             UsernamePasswordAuthenticationToken(
-                authenticationRequest.email,
+                authenticationRequest.username,
                 authenticationRequest.password
             )
         )
-        val user = userDetailsService.loadUserByUsername(authenticationRequest.email)
+        val user = userDetailsService.loadUserByUsername(authenticationRequest.username)
 
         val accessToken = createAccessToken(user)
         val refreshToken = createRefreshToken(user)
@@ -40,10 +40,10 @@ class AuthenticationService(
     }
 
     fun refreshAccessToken(refreshToken: String): String? {
-        val extractedEmail = tokenService.extractEmail(refreshToken)
+        val extractedUsername = tokenService.extractUsername(refreshToken)
 
-        return extractedEmail?.let { email ->
-            val currentUserDetails = userDetailsService.loadUserByUsername(email)
+        return extractedUsername?.let { username ->
+            val currentUserDetails = userDetailsService.loadUserByUsername(username)
             val refreshTokenUserDetails = refreshTokenRepository.findUserDetailsByToken(refreshToken)
 
             if (!tokenService.isExpired(refreshToken) && refreshTokenUserDetails?.username == currentUserDetails.username)
